@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
 [assembly: AssemblyTitle("YouTubeGrabber")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A simple application for downloading YouTube videos without annoying ads etc.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("YouTubeGrabber")]
-[assembly: AssemblyCopyright("Copyright ©  2019")]
+[assembly: AssemblyCopyright("Copyright ©  2019 by Philipp Buthmann")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
