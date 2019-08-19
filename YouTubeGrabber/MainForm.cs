@@ -14,6 +14,7 @@ namespace YouTubeGrabber
     {
         public MainForm()
         {
+            Console.WriteLine("Programm wird initialisiert...");
             InitializeComponent();
         }
     }
