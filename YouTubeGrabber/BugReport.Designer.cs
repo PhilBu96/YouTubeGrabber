@@ -39,6 +39,7 @@
             this.textBox_message = new System.Windows.Forms.TextBox();
             this.button_send = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label_chars_remaining = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -123,6 +124,7 @@
             this.textBox_message.Name = "textBox_message";
             this.textBox_message.Size = new System.Drawing.Size(677, 177);
             this.textBox_message.TabIndex = 8;
+            this.textBox_message.TextChanged += new System.EventHandler(this.TextBox_message_TextChanged);
             // 
             // button_send
             // 
@@ -147,11 +149,22 @@
             this.textBox1.Text = "Internetverbindung notwendig! Die Daten werden gespeichert und nach Auswertung ge" +
     "löscht.";
             // 
+            // label_chars_remaining
+            // 
+            this.label_chars_remaining.AutoSize = true;
+            this.label_chars_remaining.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_chars_remaining.Location = new System.Drawing.Point(506, 259);
+            this.label_chars_remaining.Name = "label_chars_remaining";
+            this.label_chars_remaining.Size = new System.Drawing.Size(189, 20);
+            this.label_chars_remaining.TabIndex = 11;
+            this.label_chars_remaining.Text = "Zeichen übrig: 1000/1000";
+            // 
             // BugReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(707, 535);
+            this.Controls.Add(this.label_chars_remaining);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button_send);
             this.Controls.Add(this.textBox_message);
@@ -183,5 +196,6 @@
         private System.Windows.Forms.TextBox textBox_message;
         private System.Windows.Forms.Button button_send;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label_chars_remaining;
     }
 }
