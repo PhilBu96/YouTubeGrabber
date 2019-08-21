@@ -28,7 +28,7 @@ namespace YouTubeGrabber
         {
             Console.WriteLine("In DownloadVideo-Methode...");
             this.uri = uri;
-            bool success;
+            bool success = false;
             saveFileDialog = new SaveFileDialog
             {
                 Filter = "mp4 - Datei | *.mp4"
@@ -70,17 +70,44 @@ namespace YouTubeGrabber
                 return success;
             }
 
-            //Metadaten zum Video holen
-            var video = youtube.GetVideo(uri);
-            title = video.Title;
-            fileExtension = video.FileExtension;
-            resolution = video.Resolution;
+            //Cursor wirt auf warten gesetzt
+            Cursor.Current = Cursors.WaitCursor;
 
-            DisplayMetaData(title, fileExtension, resolution);
+            try
+            {
+                //Metadaten zum Video holen
+                var video = youtube.GetVideo(uri);
+                title = video.Title;
+                fileExtension = video.FileExtension;
+                resolution = video.Resolution;
 
-            //File.WriteAllBytes(path, video.GetBytes());
+                DisplayMetaData(title, fileExtension, resolution);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fehler beim finden des Videos: " + uri, "Fehler!");
+                Console.WriteLine(ex);
+                success = false;
+                return success;
+            }
 
-            success = true;
+            try
+            {
+                File.WriteAllBytes(path, youtube.GetVideo(uri).GetBytes());
+            }
+            catch (Exception ex)
+            {
+                //Der Cursor wird auf normal gesetzt
+                Cursor.Current = Cursors.Default;
+                Console.WriteLine(ex);
+                MessageBox.Show("Fehler beim Download des Videos: " + title, "Fehler beim Download!");
+                success = false;
+                return success;
+            }
+
+            //Der Cursor wird auf normal gesetzt
+            Cursor.Current = Cursors.Default;
+
             return success;
         }
 
@@ -105,9 +132,14 @@ namespace YouTubeGrabber
         /// <param name="e"></param>
         private void DownloadButton_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("Download Button wurde geklickt!");
-            Console.WriteLine(DownloadVideo(textBox_inputUri.Text));
-            Console.WriteLine("DownloadVideo wurde verlassen!");
+            if (DownloadVideo(textBox_inputUri.Text))
+            {
+                MessageBox.Show("Video wurde erfolgreich heruntergeladen!", "Download erfolgreich!");
+            }
+            else
+            {
+                MessageBox.Show("Da hat etwas nicht geklappt. Bitte die URL überprüfen oder den Fehler melden!", "Fehler!");
+            }
         }
 
         /// <summary>
@@ -131,6 +163,9 @@ namespace YouTubeGrabber
                 resolution = video.Resolution;
 
                 DisplayMetaData(title, fileExtension, resolution);
+
+                //Der Cursor wird wieder normal gesetzt
+                Cursor.Current = Cursors.Default;
             }
             catch (Exception ex)
             {
