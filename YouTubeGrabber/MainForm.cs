@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace YouTubeGrabber
@@ -25,21 +18,37 @@ namespace YouTubeGrabber
         /// <returns></returns>
         private bool DownloadVideo(String url)
         {
-            bool success = false;
+            Console.WriteLine("In DownloadVideo-Methode...");
+            bool success;
 
             //Wenn nichts in der Text-Box eingegeben wurde
-            if (url == String.Empty || url == "\\s+")
+            if (url.Trim() == String.Empty)
             {
-                //Gibt immer false zurück, wenn Bedingung erfüllt, da success am Start auf false gesetzt wird
+                Console.WriteLine("URL ist leer!");
+                success = false;
                 return success;
             }
 
+            if (url.Contains("youtube") || url.Contains("youtu.be"))
+            {
+                Console.WriteLine("URL ist gültig!");
+            }
+            else
+            {
+                Console.WriteLine("URL ist ungültig!");
+                success = false;
+                return success;
+            }
+
+            success = true;
             return success;
         }
 
         private void DownloadButton_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(DownloadVideo(textBox_inputUrl.Text));
+            Console.WriteLine("Download Button wurde geklickt!");
+            Console.WriteLine(DownloadVideo(textBox_inputUrl.Text.ToLower()));
+            Console.WriteLine("DownloadVideo wurde verlassen!");
         }
     }
 }
