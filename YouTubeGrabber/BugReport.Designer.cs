@@ -133,6 +133,7 @@
             this.button_send.TabIndex = 9;
             this.button_send.Text = "Abschicken!";
             this.button_send.UseVisualStyleBackColor = true;
+            this.button_send.Click += new System.EventHandler(this.Button_send_Click);
             // 
             // textBox1
             // 

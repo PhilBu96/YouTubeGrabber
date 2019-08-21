@@ -17,6 +17,7 @@ namespace YouTubeGrabber
         {
             Console.WriteLine("Programm wird initialisiert...");
             InitializeComponent();
+            CenterToScreen();
         }
 
         /// <summary>

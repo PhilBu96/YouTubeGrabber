@@ -20,6 +20,7 @@ namespace YouTubeGrabber
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text = AssemblyDescription;
+            CenterToScreen();
         }
 
         #region Assemblyattributaccessoren
