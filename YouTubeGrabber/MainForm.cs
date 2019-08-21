@@ -28,7 +28,7 @@ namespace YouTubeGrabber
         {
             Console.WriteLine("In DownloadVideo-Methode...");
             this.uri = uri;
-            bool success = false;
+            bool success;
             saveFileDialog = new SaveFileDialog
             {
                 Filter = "mp4 - Datei | *.mp4"
@@ -108,6 +108,7 @@ namespace YouTubeGrabber
             //Der Cursor wird auf normal gesetzt
             Cursor.Current = Cursors.Default;
 
+            success = true;
             return success;
         }
 
@@ -175,6 +176,17 @@ namespace YouTubeGrabber
 
             //Der Cursor wird wieder normal gesetzt
             Cursor.Current = Cursors.Default;
+        }
+
+        private void ShowCopyrightDialog()
+        {
+            AboutBox aboutBox = new AboutBox();
+            aboutBox.Show();
+        }
+
+        private void ToolStripMenu_info_Click(object sender, EventArgs e)
+        {
+            ShowCopyrightDialog();
         }
     }
 }
