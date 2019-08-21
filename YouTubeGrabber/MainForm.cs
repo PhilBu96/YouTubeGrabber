@@ -178,6 +178,12 @@ namespace YouTubeGrabber
             Cursor.Current = Cursors.Default;
         }
 
+        private void ReportBug()
+        {
+            BugReport bugReport = new BugReport();
+            bugReport.Show();
+        }
+
         private void ShowCopyrightDialog()
         {
             AboutBox aboutBox = new AboutBox();
@@ -187,6 +193,11 @@ namespace YouTubeGrabber
         private void ToolStripMenu_info_Click(object sender, EventArgs e)
         {
             ShowCopyrightDialog();
+        }
+
+        private void FehlerMeldenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ReportBug();
         }
     }
 }

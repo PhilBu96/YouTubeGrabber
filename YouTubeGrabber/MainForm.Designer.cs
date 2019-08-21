@@ -38,6 +38,7 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.toolStripMenu_info = new System.Windows.Forms.ToolStripMenuItem();
+            this.fehlerMeldenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -111,7 +112,8 @@
             // 
             this.menuStrip.BackColor = System.Drawing.SystemColors.Menu;
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenu_info});
+            this.toolStripMenu_info,
+            this.fehlerMeldenToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(784, 24);
@@ -123,6 +125,13 @@
             this.toolStripMenu_info.Size = new System.Drawing.Size(40, 20);
             this.toolStripMenu_info.Text = "Info";
             this.toolStripMenu_info.Click += new System.EventHandler(this.ToolStripMenu_info_Click);
+            // 
+            // fehlerMeldenToolStripMenuItem
+            // 
+            this.fehlerMeldenToolStripMenuItem.Name = "fehlerMeldenToolStripMenuItem";
+            this.fehlerMeldenToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
+            this.fehlerMeldenToolStripMenuItem.Text = "Fehler melden";
+            this.fehlerMeldenToolStripMenuItem.Click += new System.EventHandler(this.FehlerMeldenToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -162,6 +171,7 @@
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenu_info;
+        private System.Windows.Forms.ToolStripMenuItem fehlerMeldenToolStripMenuItem;
     }
 }
 

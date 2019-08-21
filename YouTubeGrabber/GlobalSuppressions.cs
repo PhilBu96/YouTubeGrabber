@@ -5,4 +5,5 @@
 // a specific target and scoped to a namespace, type, member, etc.
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Codequalität", "IDE0067:Objekte verwerfen, bevor Bereich verloren geht", Justification = "<Ausstehend>", Scope = "member", Target = "~M:YouTubeGrabber.MainForm.ShowCopyrightDialog")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Codequalität", "IDE0067:Objekte verwerfen, bevor Bereich verloren geht", Justification = "<Ausstehend>", Scope = "member", Target = "~M:YouTubeGrabber.MainForm.ReportBug")]
 
