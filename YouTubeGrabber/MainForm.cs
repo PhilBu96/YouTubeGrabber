@@ -94,7 +94,32 @@ namespace YouTubeGrabber
 
             try
             {
-                File.WriteAllBytes(path, youtube.GetVideo(uri).GetBytes());
+                //Resolution ist int (360, 480, 720, 1080 usw.)
+                //File.WriteAllBytes(path, youtube.GetVideo(uri).GetBytes());
+
+                var videos = youtube.GetAllVideos(uri);
+                YouTubeVideo videoForDownload = null;
+
+                foreach (var video in videos)
+                {
+                    if (video.Resolution == int.Parse(comboBox_resolution.Text))
+                    {
+                        Console.WriteLine("Video gefunden!");
+                        videoForDownload = video;
+                        break;
+                    }
+                }
+
+                if (videoForDownload != null)
+                {
+                    Console.WriteLine("Video wird heruntergeladen...");
+                    File.WriteAllBytes(path, videoForDownload.GetBytes());
+                    Console.WriteLine("FERTIG!!!");
+                }
+                else
+                {
+                    Console.WriteLine("Das Video ist null!!!");
+                }
             }
             catch (Exception ex)
             {

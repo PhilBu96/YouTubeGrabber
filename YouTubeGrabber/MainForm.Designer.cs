@@ -39,13 +39,16 @@
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.toolStripMenu_info = new System.Windows.Forms.ToolStripMenuItem();
             this.fehlerMeldenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label3 = new System.Windows.Forms.Label();
+            this.comboBox_resolution = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBox_inputUri
             // 
             this.textBox_inputUri.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox_inputUri.Location = new System.Drawing.Point(11, 69);
+            this.textBox_inputUri.Location = new System.Drawing.Point(16, 69);
             this.textBox_inputUri.Name = "textBox_inputUri";
             this.textBox_inputUri.Size = new System.Drawing.Size(626, 31);
             this.textBox_inputUri.TabIndex = 0;
@@ -73,7 +76,7 @@
             // button_check
             // 
             this.button_check.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_check.Location = new System.Drawing.Point(644, 69);
+            this.button_check.Location = new System.Drawing.Point(648, 69);
             this.button_check.Name = "button_check";
             this.button_check.Size = new System.Drawing.Size(127, 31);
             this.button_check.TabIndex = 3;
@@ -98,7 +101,7 @@
             this.textBox_info.Location = new System.Drawing.Point(16, 147);
             this.textBox_info.Multiline = true;
             this.textBox_info.Name = "textBox_info";
-            this.textBox_info.Size = new System.Drawing.Size(755, 340);
+            this.textBox_info.Size = new System.Drawing.Size(755, 134);
             this.textBox_info.TabIndex = 5;
             // 
             // progressBar
@@ -133,11 +136,53 @@
             this.fehlerMeldenToolStripMenuItem.Text = "Fehler melden";
             this.fehlerMeldenToolStripMenuItem.Click += new System.EventHandler(this.FehlerMeldenToolStripMenuItem_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(11, 295);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(105, 25);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Optionen:";
+            // 
+            // comboBox_resolution
+            // 
+            this.comboBox_resolution.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_resolution.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox_resolution.FormattingEnabled = true;
+            this.comboBox_resolution.Items.AddRange(new object[] {
+            "144",
+            "240",
+            "360",
+            "480",
+            "720",
+            "1080",
+            "1440",
+            "2160"});
+            this.comboBox_resolution.Location = new System.Drawing.Point(16, 354);
+            this.comboBox_resolution.Name = "comboBox_resolution";
+            this.comboBox_resolution.Size = new System.Drawing.Size(121, 28);
+            this.comboBox_resolution.TabIndex = 9;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(12, 331);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(85, 20);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Auflösung:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 671);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.comboBox_resolution);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.textBox_info);
             this.Controls.Add(this.downloadButton);
@@ -172,6 +217,9 @@
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenu_info;
         private System.Windows.Forms.ToolStripMenuItem fehlerMeldenToolStripMenuItem;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox comboBox_resolution;
+        private System.Windows.Forms.Label label4;
     }
 }
 
