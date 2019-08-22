@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using VideoLibrary;
@@ -96,30 +97,63 @@ namespace YouTubeGrabber
             {
                 //Resolution ist int (360, 480, 720, 1080 usw.)
                 //File.WriteAllBytes(path, youtube.GetVideo(uri).GetBytes());
+                //PROBLEM mit Unknown AudioFormat
+                //Alle Auflösungen außer 720 sind Adaptive. Audio für alle Auflösungen in 720 enthalten
+                //Wenn Video nicht 720 -> Audio aus 720 mit Video zusammenführen
+                //Wenn Video 720 -> ganz normal in Datei schreiben
 
                 var videos = youtube.GetAllVideos(uri);
-                YouTubeVideo videoForDownload = null;
+                List<YouTubeVideo> videosForDownload = new List<YouTubeVideo>();
 
                 foreach (var video in videos)
                 {
-                    if (video.Resolution == int.Parse(comboBox_resolution.Text))
+                    if (video.Resolution == int.Parse(comboBox_resolution.Text) && video.FileExtension == ".mp4")
                     {
                         Console.WriteLine("Video gefunden!");
-                        videoForDownload = video;
-                        break;
+                        videosForDownload.Add(video);
                     }
                 }
 
-                if (videoForDownload != null)
+                foreach (var video in videosForDownload)
                 {
-                    Console.WriteLine("Video wird heruntergeladen...");
-                    File.WriteAllBytes(path, videoForDownload.GetBytes());
+                    Console.WriteLine("Auflösung: " + video.Resolution);
+                    Console.WriteLine("Titel: " + video.Title);
+                    Console.WriteLine("Dateiformat: " + video.FileExtension);
+                    Console.WriteLine("Audio-Format: " + video.AudioFormat);
+                    Console.WriteLine("Audio-Bitrate: " + video.AudioBitrate);
+                    Console.WriteLine("Video-Format: " + video.Format);
+                    Console.WriteLine("Adaptive-Kind: " + video.AdaptiveKind);
+                    Console.WriteLine("isAdaptive: " + video.IsAdaptive);
+                    
+                    Console.WriteLine();
+                }
+
+                //Auflösung 720 ist ausgewählt. Video darf nicht adaptiv sein und wird normal in Datei geschrieben
+                if (comboBox_resolution.Text == "720")
+                {
+                    File.WriteAllBytes(path, videosForDownload.Find(v => !v.IsAdaptive).GetBytes());
+                }
+                else
+                {
+                    //Nur das Video herunterladen
+                }
+
+                /*if (videosForDownload.Count > 0)
+                {
+                    int count = 0;
+                    Console.WriteLine("Videos werden heruntergeladen...");
+                    foreach (var video in videosForDownload)
+                    {
+                        File.WriteAllBytes(path + count, video.GetBytes());
+                        count++;
+                    }
+
                     Console.WriteLine("FERTIG!!!");
                 }
                 else
                 {
-                    Console.WriteLine("Das Video ist null!!!");
-                }
+                    Console.WriteLine("Keine Videos in der Liste!");
+                }*/
             }
             catch (Exception ex)
             {
