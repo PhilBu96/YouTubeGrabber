@@ -101,19 +101,36 @@ namespace YouTubeGrabber
                 //Alle Auflösungen außer 720 sind Adaptive. Audio für alle Auflösungen in 720 enthalten
                 //Wenn Video nicht 720 -> Audio aus 720 mit Video zusammenführen
                 //Wenn Video 720 -> ganz normal in Datei schreiben
+                //UPDATE: Download von Material ohne Sound klappt, dauert aber länger
+                //Nächster Schritt: Video Download (ausgew. Auflösung) + Sound vom nicht adaptiven Video mergen
 
                 var videos = youtube.GetAllVideos(uri);
+                var nonAdaptiveVideo = youtube.GetVideo(uri);
                 List<YouTubeVideo> videosForDownload = new List<YouTubeVideo>();
+                List<YouTubeVideo> videosForSound = new List<YouTubeVideo>();
+
+                //Video wird direkt heruntergeladen, wenn das gewünschte Video (Auflösung) nicht adaptiv ist
+                if (nonAdaptiveVideo.Format == VideoFormat.Mp4 && nonAdaptiveVideo.Resolution == int.Parse(comboBox_resolution.Text) && !nonAdaptiveVideo.IsAdaptive)
+                {
+                    File.WriteAllBytes(path, nonAdaptiveVideo.GetBytes());
+                    success = true;
+                    return success;
+                }
 
                 foreach (var video in videos)
                 {
-                    if (video.Resolution == int.Parse(comboBox_resolution.Text) && video.FileExtension == ".mp4")
+                    if (video.Resolution == int.Parse(comboBox_resolution.Text) && video.Format == VideoFormat.Mp4)
                     {
-                        Console.WriteLine("Video gefunden!");
                         videosForDownload.Add(video);
+                    }
+
+                    if (!video.IsAdaptive && video.Resolution > 0)
+                    {
+                        videosForSound.Add(video);
                     }
                 }
 
+                Console.WriteLine("VIDEOS FOR DOWNLOAD:");
                 foreach (var video in videosForDownload)
                 {
                     Console.WriteLine("Auflösung: " + video.Resolution);
@@ -128,32 +145,27 @@ namespace YouTubeGrabber
                     Console.WriteLine();
                 }
 
-                //Auflösung 720 ist ausgewählt. Video darf nicht adaptiv sein und wird normal in Datei geschrieben
-                if (comboBox_resolution.Text == "720")
+                Console.WriteLine("VIDEOS FOR SOUND:");
+                foreach (var video in videosForSound)
                 {
-                    File.WriteAllBytes(path, videosForDownload.Find(v => !v.IsAdaptive).GetBytes());
-                }
-                else
-                {
-                    //Nur das Video herunterladen
+                    Console.WriteLine("Auflösung: " + video.Resolution);
+                    Console.WriteLine("Titel: " + video.Title);
+                    Console.WriteLine("Dateiformat: " + video.FileExtension);
+                    Console.WriteLine("Audio-Format: " + video.AudioFormat);
+                    Console.WriteLine("Audio-Bitrate: " + video.AudioBitrate);
+                    Console.WriteLine("Video-Format: " + video.Format);
+                    Console.WriteLine("Adaptive-Kind: " + video.AdaptiveKind);
+                    Console.WriteLine("isAdaptive: " + video.IsAdaptive);
+
+                    Console.WriteLine();
                 }
 
-                /*if (videosForDownload.Count > 0)
+                //HIER FINDET DER EIGENTLICHE DOWNLOAD STATT
+                /*foreach (var video in videosForDownload)
                 {
-                    int count = 0;
-                    Console.WriteLine("Videos werden heruntergeladen...");
-                    foreach (var video in videosForDownload)
-                    {
-                        File.WriteAllBytes(path + count, video.GetBytes());
-                        count++;
-                    }
-
-                    Console.WriteLine("FERTIG!!!");
-                }
-                else
-                {
-                    Console.WriteLine("Keine Videos in der Liste!");
+                    File.WriteAllBytes(path, video.GetBytes());
                 }*/
+
             }
             catch (Exception ex)
             {
