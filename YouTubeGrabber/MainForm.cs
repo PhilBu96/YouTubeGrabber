@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using VideoLibrary;
 using Xabe.FFmpeg;
@@ -29,11 +31,10 @@ namespace YouTubeGrabber
         /// </summary>
         /// <param name="uri">Die YouTube-URL</param>
         /// <returns></returns>
-        private async System.Threading.Tasks.Task<bool> DownloadVideoAsync(string uri)
+        private void DownloadVideo(string uri)
         {
             Console.WriteLine("In DownloadVideo-Methode...");
             this.uri = uri;
-            bool success;
             saveFileDialog = new SaveFileDialog
             {
                 Filter = "mp4 - Datei | *.mp4"
@@ -45,8 +46,6 @@ namespace YouTubeGrabber
             if (uri.Trim() == string.Empty)
             {
                 Console.WriteLine("URL ist leer!");
-                success = false;
-                return success;
             }
 
             //Wenn die URL ungültig ist
@@ -57,8 +56,6 @@ namespace YouTubeGrabber
             else
             {
                 Console.WriteLine("URL ist ungültig!");
-                success = false;
-                return success;
             }
 
             //Wenn die URL in Ordnung ist, dann geht es hier weiter
@@ -71,8 +68,7 @@ namespace YouTubeGrabber
             else
             {
                 //Wenn abgebrochen wird, wird die Methode verlassen
-                success = false;
-                return success;
+                return;
             }
 
             //Cursor wirt auf warten gesetzt
@@ -92,8 +88,6 @@ namespace YouTubeGrabber
             {
                 MessageBox.Show("Fehler beim finden des Videos: " + uri, "Fehler!");
                 Console.WriteLine(ex);
-                success = false;
-                return success;
             }
 
             try
@@ -116,8 +110,6 @@ namespace YouTubeGrabber
                 if (nonAdaptiveVideo.Format == VideoFormat.Mp4 && nonAdaptiveVideo.Resolution == int.Parse(comboBox_resolution.Text) && !nonAdaptiveVideo.IsAdaptive)
                 {
                     File.WriteAllBytes(path, nonAdaptiveVideo.GetBytes());
-                    success = true;
-                    return success;
                 }
 
                 foreach (var video in videos)
@@ -183,11 +175,7 @@ namespace YouTubeGrabber
                 File.WriteAllBytes(path + "SOUND", soundVideo.GetBytes());
 
                 //Jetzt wird aus dem sound only Video nur der Ton als .mp3 extrahiert und temporär gespeichert
-                await FFmpeg.GetLatestVersion();
-                string output = path + "ONLYSOUND.mp3";
-                IConversionResult result = await Conversion.ExtractAudio(path + "SOUND", output).Start();
-                //TODO: Conversion funktioniert, es kommt aber noch eine Fehlermeldung
-
+                ConvertMp4ToMp3(path + "SOUND", path + "SOUNDONLY.mp3");
             }
             catch (Exception ex)
             {
@@ -195,15 +183,16 @@ namespace YouTubeGrabber
                 Cursor.Current = Cursors.Default;
                 Console.WriteLine(ex);
                 MessageBox.Show("Fehler beim Download des Videos: " + title, "Fehler beim Download!");
-                success = false;
-                return success;
             }
 
             //Der Cursor wird auf normal gesetzt
             Cursor.Current = Cursors.Default;
+        }
 
-            success = true;
-            return success;
+        private async void ConvertMp4ToMp3(string input, string output)
+        {
+            await FFmpeg.GetLatestVersion();
+            await Conversion.ExtractAudio(input, output).Start();
         }
 
         /// <summary>
@@ -227,14 +216,7 @@ namespace YouTubeGrabber
         /// <param name="e"></param>
         private void DownloadButton_Click(object sender, EventArgs e)
         {
-            if (DownloadVideoAsync(textBox_inputUri.Text).IsCompleted)
-            {
-                MessageBox.Show("Video wurde erfolgreich heruntergeladen!", "Download erfolgreich!");
-            }
-            else
-            {
-                MessageBox.Show("Da hat etwas nicht geklappt. Bitte die URL überprüfen oder den Fehler melden!", "Fehler!");
-            }
+            DownloadVideo(textBox_inputUri.Text);
         }
 
         /// <summary>
