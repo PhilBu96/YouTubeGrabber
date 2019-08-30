@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using VideoLibrary;
+using Xabe.FFmpeg;
+using Xabe.FFmpeg.Enums;
+using Xabe.FFmpeg.Model;
 
 namespace YouTubeGrabber
 {
@@ -26,7 +29,7 @@ namespace YouTubeGrabber
         /// </summary>
         /// <param name="uri">Die YouTube-URL</param>
         /// <returns></returns>
-        private bool DownloadVideo(string uri)
+        private async System.Threading.Tasks.Task<bool> DownloadVideoAsync(string uri)
         {
             Console.WriteLine("In DownloadVideo-Methode...");
             this.uri = uri;
@@ -160,11 +163,30 @@ namespace YouTubeGrabber
                     Console.WriteLine();
                 }
 
-                //HIER FINDET DER EIGENTLICHE DOWNLOAD STATT
-                /*foreach (var video in videosForDownload)
+                //HIER FINDET DER EIGENTLICHE DOWNLOAD STATT WENN DAS VIDEO ADAPTIV IST
+                //Download des Videos ohne Sound
+                foreach (var video in videosForDownload)
                 {
                     File.WriteAllBytes(path, video.GetBytes());
-                }*/
+                }
+
+                //Download des Videos mit Sound, aber in geringerer Auflösung
+                var soundVideo = videosForSound[0];
+                foreach (var video in videosForSound)
+                {
+                    if (video.AudioBitrate > soundVideo.AudioBitrate)
+                    {
+                        soundVideo = video;
+                    }
+                }
+                Console.WriteLine("Best audio bitrate found: " + soundVideo.AudioBitrate);
+                File.WriteAllBytes(path + "SOUND", soundVideo.GetBytes());
+
+                //Jetzt wird aus dem sound only Video nur der Ton als .mp3 extrahiert und temporär gespeichert
+                await FFmpeg.GetLatestVersion();
+                string output = path + "ONLYSOUND.mp3";
+                IConversionResult result = await Conversion.ExtractAudio(path + "SOUND", output).Start();
+                //TODO: Conversion funktioniert, es kommt aber noch eine Fehlermeldung
 
             }
             catch (Exception ex)
@@ -205,7 +227,7 @@ namespace YouTubeGrabber
         /// <param name="e"></param>
         private void DownloadButton_Click(object sender, EventArgs e)
         {
-            if (DownloadVideo(textBox_inputUri.Text))
+            if (DownloadVideoAsync(textBox_inputUri.Text).IsCompleted)
             {
                 MessageBox.Show("Video wurde erfolgreich heruntergeladen!", "Download erfolgreich!");
             }
