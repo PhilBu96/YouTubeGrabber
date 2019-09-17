@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using VideoLibrary;
 using Xabe.FFmpeg;
-using Xabe.FFmpeg.Enums;
-using Xabe.FFmpeg.Model;
 
 namespace YouTubeGrabber
 {
@@ -174,8 +170,8 @@ namespace YouTubeGrabber
                 Console.WriteLine("Best audio bitrate found: " + soundVideo.AudioBitrate);
                 File.WriteAllBytes(path + "SOUND", soundVideo.GetBytes());
 
-                //Jetzt wird aus dem sound only Video nur der Ton als .mp3 extrahiert und temporär gespeichert
-                ConvertMp4ToMp3(path + "SOUND", path + "SOUNDONLY.mp3");
+                //Extrahieren des Tons aus dem nicht adaptiven Video und zusammenführen zu einem neuen Video
+                MergeConversion(path + "SOUND", path, path + "FINAL.mp4", Path.GetDirectoryName(path) + Path.DirectorySeparatorChar);
             }
             catch (Exception ex)
             {
@@ -189,10 +185,19 @@ namespace YouTubeGrabber
             Cursor.Current = Cursors.Default;
         }
 
-        private async void ConvertMp4ToMp3(string input, string output)
+        /// <summary>
+        /// Extrahiert das Audio aus dem nicht adaptiven Video und fügt es mit dem adaptiven Video zusammen
+        /// </summary>
+        /// <param name="inputAudioVideo">Nicht adaptives Video, was das Audio enthält</param>
+        /// <param name="inputVideo">Adaptives Video, mit dem das Audio kombiniert werden soll</param>
+        /// <param name="output">Ausgabedatei für das Ergebnis</param>
+        /// <param name="workDir">Aktuelles Verzeichnis (um eine temporäre Datei anzulegen)</param>
+        private async void MergeConversion(string inputAudioVideo, string inputVideo, string output, string workDir)
         {
+            string tempAudioFile = workDir + "temp.mp3";
             await FFmpeg.GetLatestVersion();
-            await Conversion.ExtractAudio(input, output).Start();
+            await Conversion.ExtractAudio(inputAudioVideo, tempAudioFile).Start();
+            await Conversion.AddAudio(inputVideo, tempAudioFile, output).Start();
         }
 
         /// <summary>
