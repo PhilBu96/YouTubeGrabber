@@ -70,6 +70,9 @@ namespace YouTubeGrabber
             //Cursor wirt auf warten gesetzt
             Cursor.Current = Cursors.WaitCursor;
 
+            //Progress Bar wird aktiviert
+            progressBar.Style = ProgressBarStyle.Marquee;
+
             try
             {
                 //Metadaten zum Video holen
@@ -248,6 +251,9 @@ namespace YouTubeGrabber
 
                 //Der Cursor wird wieder normal gesetzt
                 Cursor.Current = Cursors.Default;
+
+                //Progress Bar wird deaktiviert
+                progressBar.Style = ProgressBarStyle.Blocks;
             }
             catch (Exception ex)
             {
@@ -257,6 +263,9 @@ namespace YouTubeGrabber
 
             //Der Cursor wird wieder normal gesetzt
             Cursor.Current = Cursors.Default;
+
+            //Progress Bar wird deaktiviert
+            progressBar.Style = ProgressBarStyle.Blocks;
         }
 
         private void ReportBug()
